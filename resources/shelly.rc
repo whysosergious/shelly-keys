@@ -1,0 +1,90 @@
+1 ICON "shelly.ico"
+
+
+use regex::Regex;
+use std::collections::HashMap;
+use std::sync::Arc;
+
+// Define the type for handler functions
+type HandlerFn = Arc<dyn Fn(&str, &str) + Send + Sync>;
+
+struct RuleSet {
+    rules: HashMap<String, HandlerFn>,
+    regexes: HashMap<String, Regex>,
+}
+
+impl RuleSet {
+    // Constructor to create a new RuleSet
+    fn new() -> Self {
+        RuleSet {
+            rules: HashMap::new(),
+            regexes: HashMap::new(),
+        }
+    }
+
+    // Method to add a rule
+    fn add_rule(&mut self, pattern: &str, handler: HandlerFn) {
+        self.rules.insert(pattern.to_string(), handler);
+    }
+
+    // Method to compile regexes
+    fn initialize(&mut self) {
+        for (pattern, _) in &self.rules {
+            let regex = Regex::new(pattern).expect("Invalid regex pattern");
+            self.regexes.insert(pattern.clone(), regex);
+        }
+    }
+
+    // Method to match content type and execute the corresponding handler
+    fn match_and_handle(&self, content_type: &str, response_body: &str) {
+        for (pattern, regex) in &self.regexes {
+            if regex.is_match(content_type) {
+                if let Some(handler) = self.rules.get(pattern) {
+                    handler(content_type, response_body);
+                    return;
+                }
+            }
+        }
+        println!("No matching handler for content type: {}", content_type);
+    }
+}
+
+fn main() {
+    let mut ruleset = RuleSet::new();
+
+    // Adding a rule for .ts files
+    ruleset.add_rule(
+        r"\.ts$",
+        Arc::new(|content_type, response_body| {
+            println!("Handling .ts file:");
+            println!("Content Type: {}", content_type);
+            println!("Response Body: {}", response_body);
+            // Add your specific handling logic here, e.g., recording the file
+        }),
+    );
+
+    // Adding a rule for .html files
+    ruleset.add_rule(
+        r"\.html$",
+        Arc::new(|content_type, response_body| {
+            println!("Handling .html file:");
+            println!("Content Type: {}", content_type);
+            println!("Response Body: {}", response_body);
+            // Add your specific handling logic here, e.g., recording the file
+        }),
+    );
+
+    // Initialize regexes
+    ruleset.initialize();
+
+    // Example content types and response bodies
+    let content_type_ts = "application/typescript";
+    let response_body_ts = "<script>console.log('Hello, TypeScript');</script>";
+
+    let content_type_html = "text/html";
+    let response_body_html = "<html><body>Hello, HTML</body></html>";
+
+    // Match and handle the content types
+    ruleset.match_and_handle(content_type_ts, response_body_ts);
+    ruleset.match_and_handle(content_type_html, response_body_html);
+}
