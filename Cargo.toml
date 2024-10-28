@@ -1,16 +1,18 @@
-cargo-features = ["edition2024"]
+# cargo-features = ["edition2024"]
 
 [package]
 name = "shelly-keys"
 github = "https://github.com/whysosergious/shelly-keys"
 version = "0.0.1"
 author = "sergio stankevich | whysosergious"
-edition = "2024"
+# edition = "2024"
+edition = "2021"
 
 [[bin]]
 name = "shelly-keys"
 
 [dependencies]
+device_query_revamped = "2.2.1"
 rdev = { version = "0.5.3", features = ["epoll", "evdev-rs", "inotify", "serde", "serialize", "unstable_grab"] }
 serde = { version = "1.0.204", features = ["derive"] }
 serde_json = { version = "1.0.122", features = ["indexmap"] }
