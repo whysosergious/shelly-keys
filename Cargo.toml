@@ -17,7 +17,40 @@ rdev = { version = "0.5.3", features = ["epoll", "evdev-rs", "inotify", "serde",
 serde = { version = "1.0.204", features = ["derive"] }
 serde_json = { version = "1.0.122", features = ["indexmap"] }
 
+# to implement native event interception we need os specific dependencies
+# see code examples for the respective os in the src/os_ex.rs
+#######################################
+
+## windows
+# winapi = { version = "0.3", features = ["winuser"] }
+
+
+## linux
+# x11 = "2.18.0"
+
+
+## macos
+# cocoa = "0.26.0"
+# core-graphics = "0.19.0"
+
+
+## android dependencies (requires setup of andoroid ndk, see building for Anftoid in the rust docs)
+# jni = "0.18.0"
+# ndk-glue = "0.7.0"
+
+
+## ios (target: aarch64-apple-ios)
+# objc = "0.2"
+#
+# [lib]
+# crate-type = ["cdylib"]
+
 
 [build-dependencies]
 # [target.'cfg(windows)'.build-dependencies]
 # windres = "0.2"
+
+## build with 'cargo lipo' command
+# [target.'cfg(ios)'.build-dependencies]
+# cargo-lipo = "0.2.0"
+
