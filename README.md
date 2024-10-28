@@ -1,1 +1,8 @@
-# shelly-__SHELLY_PLACEHOLDER_NAME__
+# shelly-keys
+
+cross-platform key listener
+
+@todo:
+
+- [ ] define api hooks for eg events, keymap definitions etc
+
