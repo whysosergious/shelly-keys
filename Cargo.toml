@@ -13,11 +13,18 @@ name = "shelly-keys"
 
 [dependencies]
 device_query_revamped = "2.2.1"
-rdev = { version = "0.5.3", features = ["epoll", "evdev-rs", "inotify", "serde", "serialize", "unstable_grab"] }
 serde = { version = "1.0.204", features = ["derive"] }
 serde_json = { version = "1.0.122", features = ["indexmap"] }
 
-# to implement native event interception we need os specific dependencies
+rdev = { version = "0.5.3", features = ["epoll", "evdev-rs", "inotify", "serde", "serialize", "unstable_grab"] }
+
+[features]
+unstable_grab = ["rdev/unstable_grab"]
+
+# unstable_grab lets us intercept global event before they reach the window manager
+
+#######################################
+# to implement native event interception without using unstable_grab we need os specific dependencies
 # see code examples for the respective os in the src/os_ex.rs
 #######################################
 
