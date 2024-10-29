@@ -301,19 +301,6 @@ fn main() {
     let mut mouse_state = MouseState::new();
     let mut keyboard_state = KeyboardState::new();
 
-// Example condition: Reset mouse x to 0 when reaching the right side of the screen
-//     let move_delta = 50.0;
-// let mut mouse_dir_x = 1.0; // Initially moving to the right
-
-// let mut test_condition = ActionCondition::new(
-//     |mouse, screen| {
-//         mouse.x.round() as u64 >= screen.width || mouse.x.round() as u64 <= 0
-//     },
-//     |mouse| {
-//         // mouse_dir_x *= -1.0; // Reverse the direction
-//     },
-// );
-
  let sceen_center_height  = screen_state.height / 2;
 let mut mouse_controller = MouseController::new(0.0, sceen_center_height as f64);
     // List of conditions to apply in each loop iteration
@@ -323,25 +310,9 @@ let mut mouse_controller = MouseController::new(0.0, sceen_center_height as f64)
 mouse_controller.update_position(screen_state.width);
 
     rdev();
-
-    // Move the mouse to the center of the screen
-       // mouse_state.update_position(0.0, sceen_center_height as f64);
-    // rdev_send(&EventType::MouseMove { x: 0.0, y: mouse_state.y });
-
-
     loop {
-        // Update mouse position
-        // mouse_state.x += 1.0;
-  // mouse_state.update_position(mouse_state.x + (mouse_dir_x * move_delta), mouse_state.y);
-
 mouse_controller.update_position(screen_state.width);
-    // Check conditions and apply actions
-    // for condition in conditions.iter_mut() { // Use iter_mut to mutate the conditions
-    //     if (condition.condition)(&mouse_state, &screen_state) {
-    //         (condition.action)(&mut mouse_state);
-    //     }
-    // }
-
+    
         // Output mouse state for debugging
         println!("Mouse position: x = {}, y = {}", mouse_state.x, mouse_state.y);
 
